@@ -150,26 +150,26 @@ st.markdown(f"""
 GRAPHQL_URL = "https://leetcode.com/graphql"
 
 QUERY_CHECK = """
-query getUserProfile($username: String!) {{
-  matchedUser(username: $username) {{
+query getUserProfile($username: String!) {
+  matchedUser(username: $username) {
     username
-  }}
-}}
+  }
+}
 """
 
 QUERY_STATS = """
-query getUserProfile($username: String!) {{
-  matchedUser(username: $username) {{
+query getUserProfile($username: String!) {
+  matchedUser(username: $username) {
     username
-    submitStats {{
-      acSubmissionNum {{
+    submitStats {
+      acSubmissionNum {
         difficulty
         count
         submissions
-      }}
-    }}
-  }}
-}}
+      }
+    }
+  }
+}
 """
 
 DEFAULT_DELAY = 0.6
@@ -221,6 +221,7 @@ def make_mock_dataset(n: int = 30) -> pd.DataFrame:
     df = pd.DataFrame(data); df["Total"] = df["Easy"] + df["Medium"] + df["Hard"]
     return df
 
+# ------------------ Streamlit UI ------------------
 st.title("〽️ Student LeetCode Performance Tracker")
 
 # Sidebar
@@ -342,9 +343,9 @@ if st.session_state.get("results_df") is not None:
     bottom = df.loc[df["Total"].idxmin()]
     avg = df["Total"].mean()
     k1,k2,k3 = st.columns(3)
-    k1.metric("🏆 Top Performer", f"{{top['Student']}} ({{top['Total']}})", delta_color="normal")
-    k2.metric("📉 Weakest Performer", f"{{bottom['Student']}} ({{bottom['Total']}})", delta_color="inverse")
-    k3.metric("📊 Average Solved", f"{{avg:.1f}}")
+    k1.metric("🏆 Top Performer", f"{top['Student']} ({top['Total']})", delta_color="normal")
+    k2.metric("📉 Weakest Performer", f"{bottom['Student']} ({bottom['Total']})", delta_color="inverse")
+    k3.metric("📊 Average Solved", f"{avg:.1f}")
 
     # Scatter Plot: Medium vs Hard
     st.subheader("Analysis: Medium vs. Hard Problems")
@@ -395,4 +396,3 @@ if st.session_state.get("results_df") is not None:
 
 else:
     st.info("No results yet. Upload dataset and fetch stats.")
-
