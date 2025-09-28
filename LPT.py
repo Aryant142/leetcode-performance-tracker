@@ -287,6 +287,12 @@ if st.session_state.get("results_df") is not None:
         fig_leader.update_traces(textposition="outside")
         st.plotly_chart(fig_leader,use_container_width=True)
 
+        st.subheader("Leaderboard Trend (Line Chart)")
+        fig_line_leader = px.line(df_valid.sort_values("Total", ascending=False), x="Student", y="Total",
+                                  text="Total", markers=True)
+        fig_line_leader.update_traces(textposition="top center")
+        st.plotly_chart(fig_line_leader, use_container_width=True)
+
         st.subheader("Problems by Difficulty")
         fig_stack = px.bar(df_valid.sort_values("Total",ascending=False), x="Student", y=["Easy","Medium","Hard"],
                            barmode="stack", color_discrete_sequence=px.colors.qualitative.Vivid)
